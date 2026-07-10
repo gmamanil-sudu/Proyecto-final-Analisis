@@ -1,9 +1,7 @@
 #include <iostream>
 #include "grafo.h"
-
-// Cuando Angelica y Heydy terminen sus modulos, aqui se agregaran:
-// #include "dfs.h"
-// #include "backtracking.h"
+#include "dfs.h"
+#include "backtracking.h"
 
 using namespace std;
 
@@ -36,24 +34,69 @@ void compararEstrategias(Grafo &grafo) {
 
     cout << "\nBuscando ruta entre " << origen << " y " << destino << "..." << endl;
 
-    // ---------------------------------------------------
-    // AQUI SE LLAMARA AL ALGORITMO DFS (modulo de Angelica)
-    // Ejemplo futuro:
-    // ResultadoDFS resultadoDFS = ejecutarDFS(grafo, indiceOrigen, indiceDestino);
-    // ---------------------------------------------------
+    // Ejecutar ambos algoritmos sobre el mismo grafo, origen y destino
+    ResultadoDFS resultadoDFS = ejecutarDFS(grafo, indiceOrigen, indiceDestino);
+    ResultadoBacktracking resultadoBT = ejecutarBacktracking(grafo, indiceOrigen, indiceDestino);
 
-    // ---------------------------------------------------
-    // AQUI SE LLAMARA AL ALGORITMO BACKTRACKING (modulo de Heydy)
-    // Ejemplo futuro:
-    // ResultadoBacktracking resultadoBT = ejecutarBacktracking(grafo, indiceOrigen, indiceDestino);
-    // ---------------------------------------------------
+    // ---------- Mostrar resultado de DFS ----------
+    cout << "\n===== RESULTADO DFS =====" << endl;
+    if (resultadoDFS.rutaEncontrada) {
+        cout << "Ruta: ";
+        for (int i = 0; i < (int)resultadoDFS.ruta.size(); i++) {
+            cout << grafo.obtenerNombreCiudad(resultadoDFS.ruta[i]);
+            if (i < (int)resultadoDFS.ruta.size() - 1) cout << " -> ";
+        }
+        cout << endl;
+        cout << "Distancia total: " << resultadoDFS.distanciaTotal << " km" << endl;
+    } else {
+        cout << "No se encontro ruta." << endl;
+    }
+    cout << "Nodos visitados: " << resultadoDFS.nodosVisitados << endl;
+    cout << "Tiempo de ejecucion: " << resultadoDFS.tiempoEjecucion << " ms" << endl;
 
-    cout << "\n(Los algoritmos DFS y Backtracking todavia no estan integrados)" << endl;
+    // ---------- Mostrar resultado de Backtracking ----------
+    cout << "\n===== RESULTADO BACKTRACKING =====" << endl;
+    if (resultadoBT.rutaEncontrada) {
+        cout << "Mejor ruta: ";
+        for (int i = 0; i < (int)resultadoBT.mejorRuta.size(); i++) {
+            cout << grafo.obtenerNombreCiudad(resultadoBT.mejorRuta[i]);
+            if (i < (int)resultadoBT.mejorRuta.size() - 1) cout << " -> ";
+        }
+        cout << endl;
+        cout << "Distancia minima: " << resultadoBT.distanciaMinima << " km" << endl;
+    } else {
+        cout << "No se encontro ruta." << endl;
+    }
+    cout << "Nodos visitados: " << resultadoBT.nodosVisitados << endl;
+    cout << "Tiempo de ejecucion: " << resultadoBT.tiempoEjecucion << " ms" << endl;
 
-    // ---------------------------------------------------
-    // AQUI SE MOSTRARA LA COMPARACION FINAL
-    // usando los datos de resultadoDFS y resultadoBT
-    // ---------------------------------------------------
+    // ---------- Comparacion final ----------
+    cout << "\n===== COMPARACION ENTRE ALGORITMOS =====" << endl;
+
+    if (resultadoDFS.rutaEncontrada && resultadoBT.rutaEncontrada) {
+        // Mejor solucion (menor distancia)
+        if (resultadoDFS.distanciaTotal < resultadoBT.distanciaMinima) {
+            cout << "Mejor solucion: DFS encontro una ruta mas corta." << endl;
+        } else if (resultadoBT.distanciaMinima < resultadoDFS.distanciaTotal) {
+            cout << "Mejor solucion: Backtracking encontro la ruta optima." << endl;
+        } else {
+            cout << "Ambos algoritmos encontraron la misma distancia." << endl;
+        }
+
+        // Mas rapido
+        if (resultadoDFS.tiempoEjecucion < resultadoBT.tiempoEjecucion) {
+            cout << "Algoritmo mas rapido: DFS." << endl;
+        } else {
+            cout << "Algoritmo mas rapido: Backtracking." << endl;
+        }
+
+        cout << "\nVentajas de DFS: rapido, usa poca memoria, sencillo de implementar." << endl;
+        cout << "Desventajas de DFS: no garantiza la ruta mas corta." << endl;
+        cout << "\nVentajas de Backtracking: garantiza la ruta optima (menor distancia)." << endl;
+        cout << "Desventajas de Backtracking: mucho mas lento, explora mas nodos." << endl;
+    } else {
+        cout << "No se puede comparar: alguno de los algoritmos no encontro ruta." << endl;
+    }
 }
 
 int main() {
