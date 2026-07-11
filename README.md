@@ -10,7 +10,7 @@ El objetivo del proyecto es analizar el desempeño de ambas estrategias para det
 
 - Grecia Mamani Larico
 - Heydy Castillo Arocutipa
-- Angélica Huaman Cubo
+- Angélica Huaman Cuba
 - Albana Elizabeth Vásquez Paredes
 
 ## Instrucciones de ejecución
